@@ -22,17 +22,17 @@ export function formatPhone(phone) {
 }
 export function validPhone(phone) { return /^[0-9]{10,11}$/.test(normalizePhone(phone)); }
 export function orderWhatsappUrl(storePhone, order, customer) {
-  const lines=[`🥟 *Novo Pedido #${order.numero_pedido}*`,``,`👤 *Cliente:* ${customer.nome}`,`📱 *WhatsApp:* ${customer.telefone}`,``,`🧺 *Itens:*`];
+  const lines=[`*Novo Pedido #${order.numero_pedido}*`,``,`*Cliente:* ${customer.nome}`,`*WhatsApp:* ${customer.telefone}`,``,`*Itens:*`];
   for(const item of order.itens) {
     lines.push(`• ${item.quantidade}x ${item.nome_produto}${item.observacao?` — ${item.observacao}`:''} — ${new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(Number(item.preco_unitario)*item.quantidade)}`);
   }
-  lines.push('',`📦 *Recebimento:* ${order.tipo_entrega==='entrega'?'Entrega':'Retirada'}`);
-  if(order.endereco_entrega) lines.push(`📍 *Endereço:* ${order.endereco_entrega}`);
-  if(Number(order.taxa_entrega)>0) lines.push(`🛵 *Taxa de entrega:* ${new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(order.taxa_entrega)}`);
-  lines.push(`🕒 *Agendado:* ${new Intl.DateTimeFormat('pt-BR',{dateStyle:'short',timeStyle:'short',timeZone:'America/Fortaleza'}).format(new Date(order.agendado_para))}`);
-  lines.push(`💳 *Pagamento:* ${{pix:'Pix',cartao:'Cartão',dinheiro:'Dinheiro'}[order.metodo_pagamento]||order.metodo_pagamento}`);
-  if(order.troco_para) lines.push(`💵 *Troco para:* ${new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(order.troco_para)}`);
-  lines.push('',`✅ *Total: ${new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(order.total)}*`);
+  lines.push('',`*Recebimento:* ${order.tipo_entrega==='entrega'?'Entrega':'Retirada'}`);
+  if(order.endereco_entrega) lines.push(`*Endereço:* ${order.endereco_entrega}`);
+  if(Number(order.taxa_entrega)>0) lines.push(`*Taxa de entrega:* ${new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(order.taxa_entrega)}`);
+  lines.push(`*Agendado:* ${new Intl.DateTimeFormat('pt-BR',{dateStyle:'short',timeStyle:'short',timeZone:'America/Fortaleza'}).format(new Date(order.agendado_para))}`);
+  lines.push(`*Pagamento:* ${{pix:'Pix',cartao:'Cartão',dinheiro:'Dinheiro'}[order.metodo_pagamento]||order.metodo_pagamento}`);
+  if(order.troco_para) lines.push(`*Troco para:* ${new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(order.troco_para)}`);
+  lines.push('',`*Total: ${new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(order.total)}*`);
   const digits=normalizePhone(storePhone);
   return `https://wa.me/${digits.length<=11?'55':''}${digits}?text=${encodeURIComponent(lines.join('\n'))}`;
 }
