@@ -1,0 +1,7 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {canPurchase,scheduleError,scheduleISO,whatsappUrl,nextStatus} from '../src/lib/order.mjs';
+const config={antecedencia_horas:3,horarios_semana:{'0':{abre:'10:00',fecha:'14:00'},'1':null,'2':{abre:'09:00',fecha:'18:00'},'3':{abre:'09:00',fecha:'18:00'},'4':{abre:'09:00',fecha:'18:00'},'5':{abre:'09:00',fecha:'18:00'},'6':{abre:'09:00',fecha:'18:00'}}};
+test('unpriced, archived and sold-out products cannot be purchased',()=>{assert.ok(!canPurchase({is_ativo:true,esgotado:false,preco:null}));assert.ok(!canPurchase({is_ativo:true,esgotado:true,preco:5}));assert.ok(!canPurchase({is_ativo:false,esgotado:false,preco:5}));assert.ok(canPurchase({is_ativo:true,esgotado:false,preco:5}));});
+test('minimum three hours, valid working day and closing time',()=>{const now=Date.parse('2026-10-29T12:00:00-03:00');assert.equal(scheduleError('2026-10-29T15:00',config,now),null);assert.ok(scheduleError('2026-10-29T14:59',config,now));assert.ok(scheduleError('2026-11-02T12:00',config,now));assert.equal(scheduleError('2026-11-01T14:00',config,now),null);assert.ok(scheduleError('2026-11-01T14:01',config,now));});
+test('Fortaleza scheduling and Brazilian WhatsApp link',()=>{assert.equal(scheduleISO('2026-10-30T09:00'),'2026-10-30T12:00:00.000Z');assert.equal(whatsappUrl('98988571869'),'https://wa.me/5598988571869');assert.equal(nextStatus('unknown'),null);});

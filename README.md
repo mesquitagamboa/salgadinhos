@@ -47,4 +47,3 @@ Pedidos e configuração usam Postgres Changes; acompanhamento usa um canal com 
 O cadastro/login depende das configurações de e-mail do Supabase. Adicione a URL publicada à lista de redirect URLs em Auth para retorno ao app após confirmação. A confirmação de e-mail e login da conta real devem ser feitos pelo titular; não são simulados por bypass.
 
 Antes de abrir ao público: preencher preços e conferir cardápio, validar o primeiro login e um pedido real, configurar SMTP para volume de produção e proteção contra abuso conforme tráfego. O limite básico por telefone não substitui proteção por IP/CAPTCHA para tráfego aberto. Não foram feitos testes de carga ou integração bancária.
-
